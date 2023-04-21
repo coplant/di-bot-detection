@@ -1,8 +1,11 @@
+import sys
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
+sys.path.append("..")
+
 from config import BASE_DIR
-from src.home.router import router as home_router
+from home.router import router as home_router
 
 app = FastAPI()
 
