@@ -5,13 +5,8 @@ from home.models import Code
 from home.schemas import FormData
 
 
-async def use_code(input_data: FormData, session: AsyncSession):
+async def get_code(input_data: FormData, session: AsyncSession):
     code: str = input_data.code
-    query = select(Code).filter_by(code=code)
+    query = select(Code).filter_by(code=code).filter_by(is_active=True)
     found_code = await session.execute(query)
-    found_code = found_code.unique().scalar_one_or_none()
-    if found_code:
-        found_code.is_active = False
-        await session.commit()
-        return True
-    return False
+    return found_code.unique().scalar_one_or_none()
