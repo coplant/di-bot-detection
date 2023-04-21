@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Form, Depends
+from fastapi import APIRouter, Form, Depends, HTTPException
 from fastapi.templating import Jinja2Templates
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
@@ -29,14 +30,16 @@ async def root(request: Request):
 @router.post("/submit", responses={422: {"model": ""}})
 async def submit_form(form_data: FormData = Depends(FormData.as_form),
                       session: AsyncSession = Depends(get_async_session)):
-    # todo: data processing
-    print(1)
-    if await use_code(form_data, session):
-        # todo: set cookie
-        response = RedirectResponse(url="/thanks", status_code=status.HTTP_302_FOUND)
-    else:
-        response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    return response
+    try:
+        # todo: data processing
+        if await use_code(form_data, session):
+            # todo: set cookie
+            response = RedirectResponse(url="/thanks", status_code=status.HTTP_302_FOUND)
+        else:
+            response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+        return response
+    except ValidationError as e:
+        raise HTTPException(status_code=422)
 
 
 @router.get("/thanks", response_class=HTMLResponse)

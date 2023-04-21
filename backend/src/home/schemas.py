@@ -1,17 +1,17 @@
 from fastapi import Form
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class FormData(BaseModel):
     username: str
-    email: EmailStr
+    email: str
     code: str
     flag: bool
 
     @classmethod
     def as_form(cls,
                 username: str = Form(...),
-                email: EmailStr = Form(...),
+                email: str = Form(...),
                 code: str = Form(...),
                 flag: bool = Form(...)):
         return cls(username=username,
