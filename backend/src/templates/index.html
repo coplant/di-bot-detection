@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Принять участие{% endblock title %}
+{% block content %}
+  <div class="container max-w-full mx-auto md:py-24 px-6">
+    <div class="max-w-sm mx-auto px-6">
+      <div class="relative flex flex-wrap">
+        <div class="w-full relative">
+          <div class="md:mt-6">
+            <div class="text-center font-bold text-black">
+              Принять участие
+            </div>
+            <form class="mt-8" action="{{ url_for("submit_form") }}" method="post">
+              <div class="mx-auto max-w-lg ">
+                <div class="py-1">
+                  <span class="px-1 text-sm text-gray-600">Имя пользователя</span>
+                  <input name="username" required placeholder="" type="text"
+                         class="text-md block px-3 py-2 rounded-lg w-full
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
+                </div>
+                <div class="py-1">
+                  <span class="px-1 text-sm text-gray-600">Адрес эл. почты</span>
+                  <input name="email" required placeholder="" type="email"
+                         class="text-md block px-3 py-2 rounded-lg w-full
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
+                </div>
+                <div class="py-1">
+                  <span class="px-1 text-sm text-gray-600">Серийный номер</span>
+                  <input name="code" required placeholder="" type="text"
+                         class="text-md block px-3 py-2 rounded-lg w-full maxlength-10
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
+                </div>
+                <div class="flex justify-start">
+                  <label class="block text-gray-500 font-bold my-4 flex items-center">
+                    <input name="flag" required class="leading-loose text-pink-600 top-0" type="checkbox"/>
+                    <span class="ml-2 text-sm py-2 text-gray-600 text-left">Я принимаю условия соглашения</span>
+                  </label>
+                </div>
+                <button type="submit"
+                        class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
+                  Участвовать
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

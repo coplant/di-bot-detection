@@ -45,7 +45,7 @@ target/
 .python-version
 celerybeat-schedule
 .env
-venv/
+backend/venv/
 ENV/
 .spyderproject
 .ropeproject
