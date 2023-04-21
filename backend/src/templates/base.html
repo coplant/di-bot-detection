@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <noscript>
+    {% block noscript %}
+      <style>
+          html {
+              display: none;
+              visibility: hidden;
+          }
+      </style>
+      <meta http-equiv="refresh" content="0; url={{ request.url_for("noscript") }}">
+    {% endblock %}
+  </noscript>
+  <noscript>Доступ запрещен</noscript>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">

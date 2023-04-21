@@ -77,3 +77,8 @@ async def thanks(request: Request,
     else:
         response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     return response
+
+
+@router.get("/noscript", response_class=HTMLResponse)
+async def noscript(request: Request):
+    return templates.TemplateResponse("nojs.html", {"request": request})
