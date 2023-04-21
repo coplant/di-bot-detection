@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
@@ -20,10 +21,14 @@ templates = Jinja2Templates(directory=BASE_DIR / "src" / "templates")
 
 
 @router.get("/", response_class=HTMLResponse, responses={422: {"model": ""}})
-async def root(request: Request):
-    # todo: check cookie
-    condition = True
-    if condition:
+async def root(request: Request,
+               session: AsyncSession = Depends(get_async_session)):
+    cookies = request.cookies
+    user_identifier = cookies.get("userIdentifier")
+    query = select(User).filter_by(uid=user_identifier)
+    user = await session.execute(query)
+    user = user.unique().scalar_one_or_none()
+    if not user:
         response = templates.TemplateResponse("index.html",
                                               {"request": request, "submit_form": router.url_path_for("submit_form")})
     else:
