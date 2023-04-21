@@ -65,11 +65,15 @@ async def submit_form(form_data: FormData = Depends(FormData.as_form),
 
 
 @router.get("/thanks", response_class=HTMLResponse)
-async def thanks(request: Request):
-    # todo: if id in cookie:
-    condition = True
-    if condition:
-        response = templates.TemplateResponse("thanks.html", {"request": request, "id": 0})
+async def thanks(request: Request,
+                 session: AsyncSession = Depends(get_async_session)):
+    cookies = request.cookies
+    user_identifier = cookies.get("userIdentifier")
+    query = select(User).filter_by(uid=user_identifier)
+    user = await session.execute(query)
+    user = user.unique().scalar_one_or_none()
+    if user:
+        response = templates.TemplateResponse("thanks.html", {"request": request, "id": user.id})
     else:
         response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     return response
