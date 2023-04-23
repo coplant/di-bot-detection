@@ -1,0 +1,32 @@
+export const Browser = Object.freeze({
+    CHROME: Symbol("Chrome"),
+    OPERA: Symbol("Opera"),
+    SAFARI: Symbol("Safari"),
+    IE: Symbol("IE"),
+    FIREFOX: Symbol("Firefox"),
+    CHROMIUM: Symbol("Chromium"),
+    GOOGLEBOT: Symbol("GoogleBot"),
+    EDGE: Symbol("Edge"),
+    UC: Symbol("UCBrowser"),
+    WEBKIT_MOBILE: Symbol("webkitMobile"),
+    WEBKIT: Symbol("webkit"),
+});
+
+export const BotType = Object.freeze({
+    AWESOMIUM: Symbol("Awesomium"),
+    CEF: Symbol("CEF"),
+    CEFSHARP: Symbol("CEFSharp"),
+    COACH_JS: Symbol("CoachJS"),
+    FMINER: Symbol("FMiner"),
+    GEB: Symbol("GEB"),
+    NIGHTMARE_JS: Symbol("NightmareJS"),
+    PHANTOMAS: Symbol("Phantomas"),
+    PHANTOMJS: Symbol("PhantomJS"),
+    RHINO: Symbol("Rhino"),
+    SELENIUM: Symbol("Selenium"),
+    WEBDRIVER_IO: Symbol("WebdriverIO"),
+    WEBDRIVER: Symbol("Webdriver"),
+    HEADLESS: Symbol("Headless Chrome"),
+    ELECTRON: Symbol("Electron"),
+    SLIMER_JS: Symbol("SlimerJS"),
+});
