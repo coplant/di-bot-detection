@@ -1,4 +1,5 @@
 export const Browser = Object.freeze({
+    NO_USERAGENT: Symbol("No UserAgent"),
     CHROME: Symbol("Chrome"),
     OPERA: Symbol("Opera"),
     SAFARI: Symbol("Safari"),
