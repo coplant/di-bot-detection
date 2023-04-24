@@ -8,7 +8,7 @@ export function getUserAgent() {
 export function getBotTypeByUserAgent() {
     let userAgent = getUserAgent();
     if (!userAgent) {
-        return false;
+        return Browser.NO_USERAGENT;
     }
     if (/PhantomJS/i.test(userAgent)) {
         return BotType.PHANTOMJS;
@@ -42,6 +42,9 @@ export function getBotTypeByUserAgent() {
 
 export function getBrowser() {
     const userAgent = getUserAgent();
+    if (!userAgent) {
+        return Browser.NO_USERAGENT;
+    }
     let browser = "unknown";
     let version = "unknown";
 
