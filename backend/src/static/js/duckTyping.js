@@ -7,17 +7,13 @@ export function detectBrowserDuckTyping() {
     }
     else if (window.navigator.msMaxTouchPoints) {
         browser = Browser.IE;
-    }
-    else if (!!window.chrome && !(!!window.opera || navigator.userAgent.indexOf(' Opera') >= 0)) {
+    } else if (!!window.chrome && !(!!window.opera || navigator.userAgent.indexOf(' Opera') >= 0) && !document.fonts.check("12px NotExistingFont")) {
         browser = Browser.CHROME;
-    }
-    else if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) {
+    } else if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) {
         browser = Browser.SAFARI;
-    }
-    else if ('orientation' in window && 'webkitRequestAnimationFrame' in window) {
+    } else if ('orientation' in window && 'webkitRequestAnimationFrame' in window) {
         browser = Browser.WEBKIT_MOBILE;
-    }
-    else if ('webkitRequestAnimationFrame' in window) {
+    } else if ('webkitRequestAnimationFrame' in window) {
         browser = Browser.WEBKIT;
     }
     else if (navigator.userAgent.indexOf('Opera') >= 0) {
