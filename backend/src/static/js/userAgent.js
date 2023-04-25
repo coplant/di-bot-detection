@@ -80,7 +80,7 @@ export function getBrowser() {
         browser = Browser.OPERA;
         version = `${getBrowserVersion(match(/(opera|opr)\/([\d\.]+)/i))}`;
     }
-    return [browser, version];
+    return [browser.description, version];
 }
 
 function getBrowserVersion(match) {
