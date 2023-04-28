@@ -37,7 +37,6 @@ export let sha256 = function sha256(ascii) {
     words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
     words[words[lengthProperty]] = (asciiBitLength)
 
-    // process each chunk
     for (j = 0; j < words[lengthProperty];) {
         let w = words.slice(j, j += 16);
         let oldHash = hash;

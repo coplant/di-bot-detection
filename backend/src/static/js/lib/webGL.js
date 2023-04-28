@@ -1,4 +1,4 @@
-import {BotType} from "./browserInfo";
+import {BotType} from "./browserInfo.js";
 
 export function getWebGL() {
     const gl = document.createElement("canvas").getContext("webgl");

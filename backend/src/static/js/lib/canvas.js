@@ -169,6 +169,6 @@ const params = {
 const numShapes = 10;
 let initialSeed = 1337;
 
-export const canvasValue = drawCanvas(
+export const getCanvasValue = drawCanvas(
     numShapes, initialSeed, params
 );
