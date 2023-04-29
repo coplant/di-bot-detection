@@ -61,7 +61,7 @@ async def submit_form(form_data: FormData = Depends(FormData.as_form),
     except HTTPException as e:
         return Response(content=e.detail, status_code=e.status_code)
     except ValidationError:
-        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/", status_code=status.HTTP_400_BAD_REQUEST)
 
 
 @router.get("/thanks", response_class=HTMLResponse)
