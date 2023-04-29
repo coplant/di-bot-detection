@@ -16,8 +16,8 @@ async def proxy_route(request: Request):
     payload = dict(await request.form())
     async with httpx.AsyncClient() as client:
         headers = {k.decode(): v.decode() for k, v in request.headers.raw if
-                   k.decode().lower() in ('content-type', 'host')}
-        # headers["host"] = API_HOST
+                   k.decode().lower() in ('content-type',)}
+        headers["host"] = API_HOST + f":{PORT}" if PORT else ""
         proxy_request = client.build_request(
             method=request.method,
             url=str(request.url.replace(hostname=API_HOST, port=PORT)),
