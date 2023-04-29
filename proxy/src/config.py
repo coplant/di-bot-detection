@@ -6,6 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
+API_HOST = os.environ.get("API_HOST")
+API_PORT = os.environ.get("API_PORT")
+
 DEFAULT_FILE_CHUNK_SIZE = 1024 * 1024 * 5
 
 DB_HOST = os.environ.get("DB_HOST")

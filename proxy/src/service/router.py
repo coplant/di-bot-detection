@@ -3,10 +3,9 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import Response
 
-router = APIRouter()
+from proxy.src.config import API_HOST, API_PORT
 
-API_HOST = "localhost"
-PORT = 8000
+router = APIRouter()
 
 
 @router.api_route("/", methods=["GET", "POST"])
@@ -17,10 +16,10 @@ async def proxy_route(request: Request):
     async with httpx.AsyncClient() as client:
         headers = {k.decode(): v.decode() for k, v in request.headers.raw if
                    k.decode().lower() in ('content-type',)}
-        headers["host"] = API_HOST + f":{PORT}" if PORT else ""
+        headers["host"] = API_HOST + f":{API_PORT}" if API_PORT else ""
         proxy_request = client.build_request(
             method=request.method,
-            url=str(request.url.replace(hostname=API_HOST, port=PORT)),
+            url=str(request.url.replace(hostname=API_HOST, port=API_PORT)),
             headers=headers,
             content=body,
             data=payload,
