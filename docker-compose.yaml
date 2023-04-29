@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env
+      - backend/.env
     networks:
       - my-network
 
@@ -18,7 +18,7 @@ services:
 #    build:
 #      context: ./backend
 #    env_file:
-#      - .env
+#      - backend/src/.env
 #    container_name: backend
 #    ports:
 #      - "8000:8000"

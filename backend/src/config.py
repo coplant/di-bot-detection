@@ -2,9 +2,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 DEFAULT_FILE_CHUNK_SIZE = 1024 * 1024 * 5
 
