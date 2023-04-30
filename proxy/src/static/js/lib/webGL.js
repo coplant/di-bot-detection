@@ -14,5 +14,6 @@ export function detectWebGL() {
         if (vendor === 'Brian Paul' && renderer === 'Mesa OffScreen') {
             return BotType.HEADLESS;
         }
+        return false;
     }
 }

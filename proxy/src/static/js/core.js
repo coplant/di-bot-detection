@@ -13,7 +13,7 @@ function collectData() {
             eval: fingerprints.eval.getEvalLength(),
             driver: fingerprints.webDriver.getWebDriver(),
             plugin: fingerprints.plugins.getPluginData(),
-            webgl: fingerprints.webGL.detectWebGL(),
+            webgl: fingerprints.webGL.getWebGL(),
             bot: fingerprints.userAgent.getBotTypeByUserAgent(),
             ua: fingerprints.userAgent.getBrowser()
         };
@@ -64,7 +64,8 @@ function collectData() {
     }
     if (config.collect.webGL) {
         data.webGL = {
-            value: fingerprints.webGL.detectWebGL()
+            headless: fingerprints.webGL.detectWebGL(),
+            value: fingerprints.webGL.getWebGL()
         };
     }
     if (config.collect.language) {
