@@ -1,7 +1,7 @@
 import uuid
 
 from sqlalchemy import Integer, Column, String, Boolean, ForeignKey, UUID
-from src.database import Base
+from backend.src.database import Base
 
 
 class User(Base):
