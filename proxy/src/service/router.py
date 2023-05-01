@@ -32,34 +32,9 @@ async def get_fingerprint(request: Request,
 async def proxy_route(request: Request,
                       session: AsyncSession = Depends(get_async_session)):
     cookie = request.cookies.get("sessionIdentifier")
-    html_content = f"""<script type="module" src="{STATIC_PATH}"></script>"""
-    if not cookie:
-        return HTMLResponse(content=html_content, media_type="text/html")
-    if not is_valid_uuid(cookie):
-        await as_bot(request, session)
-        return Response(status_code=status.HTTP_403_FORBIDDEN)
-    else:
-        query = select(Cookie).filter_by(value=cookie)
-        result = await session.execute(query)
-        result = result.unique().scalar_one_or_none()
-        if not result:
-            await as_bot(request, session)
-            return Response(status_code=status.HTTP_403_FORBIDDEN)
-        if not result.expiration_time >= datetime.utcnow():
-            return HTMLResponse(content=html_content, media_type="text/html")
-
-    # todo: проверка на то, является ли юзер ботом или нет
-
-    # todo: сделать разветвление
-    #   1: если кук нет - рендерить HTML + JS,
-    #       JS отправляет данные на роут,
-    #       роут устанавливает куки
-    #       куки сообщают о том, что пользователь отправил свои отпечатки => в JS делать редирект или обновление
-    #   2: если есть куки - делать проксирование
-    #       куки должны быстро истекать? живут до закрытия браузера
-    #       в первом роуте делать запрос в DB по IP
-    #       если кука не соответствует пользователю - запрос на получение отпечатков
-
+    not_valid = await is_valid_cookie(cookie, request, session)
+    if not_valid:
+        return not_valid
     body = await request.body()
     payload = dict(await request.form())
     async with httpx.AsyncClient() as client:
