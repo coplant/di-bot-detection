@@ -49,8 +49,7 @@ function collectData() {
             inner_height: fingerprints.screen.getWindowInnerHeight(),
             inner_width: fingerprints.screen.getWindowInnerWidth(),
             outer_height: fingerprints.screen.getWindowOuterHeight(),
-            outer_width: fingerprints.screen.getWindowOuterWidth(),
-            mobile: fingerprints.userAgent.isMobileDevice()
+            outer_width: fingerprints.screen.getWindowOuterWidth()
         };
     }
     if (config.collect.webRTC) {

@@ -88,10 +88,8 @@ function getBrowserVersion(match) {
 }
 
 
-export function isMobileDevice(userAgent) {
-    if (!userAgent) {
-        userAgent = getUserAgent();
-    }
+export function isMobileDevice() {
+    let userAgent = getUserAgent().toLowerCase();
     let width = getScreenWidth();
     let height = getScreenHeight();
     if (userAgent.includes("mobi") || userAgent.includes("tablet")) {

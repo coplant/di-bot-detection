@@ -39,7 +39,6 @@ class ScreenSchema(BaseModel):
     inner_width: Union[int, None] = None
     outer_height: Union[int, None] = None
     outer_width: Union[int, None] = None
-    mobile: Union[bool, None] = None
 
 
 class WebRTCSchema(BaseModel):
