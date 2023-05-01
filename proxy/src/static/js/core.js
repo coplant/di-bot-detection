@@ -27,7 +27,7 @@ function collectData() {
     if (config.collect.fonts) {
         let fonts = fingerprints.fonts.getAvailableFonts();
         data.fonts = {
-            list: fonts,
+            font_list: fonts,
             size: fonts.length
         };
     }
