@@ -1,26 +1,52 @@
+import uuid
+from datetime import datetime
+
 import httpx as httpx
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Depends
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 from starlette.requests import Request
 from starlette.responses import Response, HTMLResponse
-from proxy.src.config import API_HOST, API_PORT
+
+from database import get_async_session
+from proxy.src.config import API_HOST, API_PORT, STATIC_PATH
+from service.models import Cookie, User
+from service.schemas import FingerprintSchema
+from service.utils import is_valid_uuid, as_bot
 
 router = APIRouter()
-STATIC_PATH = "/static/js/core.js"
 
 
 @router.post("/api/json")
-async def get_fingerprint():
+async def get_fingerprint(request: Request,
+                          fingerprint: FingerprintSchema):
     # todo: receive fingerprint
     return NotImplemented
 
 
 @router.api_route("/", methods=["GET", "POST"])
 @router.api_route("/{route_path:path}", methods=["GET", "POST"])
-async def proxy_route(request: Request):
+async def proxy_route(request: Request,
+                      session: AsyncSession = Depends(get_async_session)):
     cookie = request.cookies.get("sessionIdentifier")
+    html_content = f"""<script type="module" src="{STATIC_PATH}"></script>"""
     if not cookie:
-        html_content = f"""<script type="module" src="{STATIC_PATH}"></script>"""
         return HTMLResponse(content=html_content, media_type="text/html")
+    if not is_valid_uuid(cookie):
+        await as_bot(request, session)
+        return Response(status_code=status.HTTP_403_FORBIDDEN)
+    else:
+        query = select(Cookie).filter_by(value=cookie)
+        result = await session.execute(query)
+        result = result.unique().scalar_one_or_none()
+        if not result:
+            await as_bot(request, session)
+            return Response(status_code=status.HTTP_403_FORBIDDEN)
+        if not result.expiration_time >= datetime.utcnow():
+            return HTMLResponse(content=html_content, media_type="text/html")
+
+    # todo: проверка на то, является ли юзер ботом или нет
 
     # todo: сделать разветвление
     #   1: если кук нет - рендерить HTML + JS,

@@ -8,6 +8,8 @@ load_dotenv(BASE_DIR / ".env")
 
 API_HOST = os.environ.get("API_HOST")
 API_PORT = os.environ.get("API_PORT")
+EXPIRATION_TIME = os.environ.get("EXPIRATION_TIME")
+STATIC_PATH = "/static/js/core.js"
 
 DEFAULT_FILE_CHUNK_SIZE = 1024 * 1024 * 5
 
