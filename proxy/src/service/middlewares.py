@@ -1,7 +1,6 @@
-from fastapi import FastAPI, Request, status, Depends
+from fastapi import Request, status
 from fastapi.responses import Response
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import async_session_maker
 from service.models import User
