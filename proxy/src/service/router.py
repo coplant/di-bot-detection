@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import Response, HTMLResponse
+from ratelimiter import limiter
 
 from database import get_async_session
 from proxy.src.config import API_HOST, API_PORT, STATIC_PATH
@@ -27,6 +28,7 @@ async def get_fingerprint(request: Request,
 
 @router.api_route("/", methods=["GET", "POST"])
 @router.api_route("/{route_path:path}", methods=["GET", "POST"])
+@limiter.limit("2/5seconds")
 async def proxy_route(request: Request,
                       session: AsyncSession = Depends(get_async_session)):
     cookie = request.cookies.get("sessionIdentifier")
