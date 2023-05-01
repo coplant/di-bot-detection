@@ -2,12 +2,10 @@ import sys
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.staticfiles import StaticFiles
-from exceptions import validation_exception_handler
 
-sys.path.append("..")
-
-from config import BASE_DIR
-from home.router import router as home_router
+from backend.src.exceptions import validation_exception_handler
+from backend.src.config import BASE_DIR
+from backend.src.home.router import router as home_router
 
 app = FastAPI()
 

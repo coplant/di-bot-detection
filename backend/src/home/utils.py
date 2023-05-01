@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from home.models import Code
-from home.schemas import FormData
+from backend.src.home.models import Code
+from backend.src.home.schemas import FormData
 
 
 async def get_code(input_data: FormData, session: AsyncSession):

@@ -10,11 +10,11 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
-from config import BASE_DIR
-from database import get_async_session
-from home.models import User, Code
-from home.schemas import FormData
-from home.utils import get_code
+from backend.src.config import BASE_DIR
+from backend.src.database import get_async_session
+from backend.src.home.models import User, Code
+from backend.src.home.schemas import FormData
+from backend.src.home.utils import get_code
 
 router = APIRouter()
 templates = Jinja2Templates(directory=BASE_DIR / "src" / "templates")
