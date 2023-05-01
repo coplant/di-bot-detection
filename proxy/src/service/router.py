@@ -11,7 +11,7 @@ from starlette.responses import Response, HTMLResponse
 from ratelimiter import limiter
 
 from database import get_async_session
-from proxy.src.config import API_HOST, API_PORT, STATIC_PATH
+from proxy.src.config import API_HOST, API_PORT, STATIC_PATH, RATE_LIMITER_TIME, RATE_LIMITER_COUNT
 from service.models import Cookie, User
 from service.schemas import FingerprintSchema
 from service.utils import is_valid_uuid, as_bot
@@ -28,7 +28,7 @@ async def get_fingerprint(request: Request,
 
 @router.api_route("/", methods=["GET", "POST"])
 @router.api_route("/{route_path:path}", methods=["GET", "POST"])
-@limiter.limit("2/5seconds")
+@limiter.limit(f"{RATE_LIMITER_COUNT}/{RATE_LIMITER_TIME}seconds")
 async def proxy_route(request: Request,
                       session: AsyncSession = Depends(get_async_session)):
     cookie = request.cookies.get("sessionIdentifier")

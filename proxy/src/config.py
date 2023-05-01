@@ -8,6 +8,10 @@ load_dotenv(BASE_DIR / ".env")
 
 API_HOST = os.environ.get("API_HOST")
 API_PORT = os.environ.get("API_PORT")
+
+RATE_LIMITER_COUNT = 2  # requests count per
+RATE_LIMITER_TIME = 5  # seconds
+
 EXPIRATION_TIME = os.environ.get("EXPIRATION_TIME")
 STATIC_PATH = "/static/js/core.js"
 
