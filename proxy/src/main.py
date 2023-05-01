@@ -7,10 +7,9 @@ from starlette.staticfiles import StaticFiles
 from exceptions import rate_limit_exceeded_handler
 from ratelimiter import limiter
 
-from proxy.src.service.middlewares import validate_ip
+from proxy.src.service.middlewares import validate_ip, validate_fingerprint
 from proxy.src.service.router import router as service_router
 
-sys.path.append("..")
 
 from config import BASE_DIR
 
@@ -19,6 +18,7 @@ app = FastAPI()
 app.state.limiter = limiter
 app.mount("/static", StaticFiles(directory=BASE_DIR / "src" / "static"), name="static")
 app.middleware("http")(validate_ip)
+app.middleware("http")(validate_fingerprint)
 app.add_middleware(SlowAPIMiddleware)
 app.include_router(service_router)
 app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)

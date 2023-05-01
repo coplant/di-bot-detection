@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, Response
+from starlette.responses import Response
 
 from proxy.src.service import models
 from proxy.src.config import EXPIRATION_TIME, STATIC_PATH
@@ -43,19 +43,26 @@ async def as_bot(request: Request, session: AsyncSession):
     await session.commit()
 
 
+async def get_cookie_by_value(cookie, session: AsyncSession):
+    query = select(models.Cookie).filter_by(value=cookie)
+    result = await session.execute(query)
+    return result.unique().scalar_one_or_none()
+
+
 async def is_valid_cookie(cookie: str, request: Request, session: AsyncSession):
     html_content = f"""<script type="module" src="{STATIC_PATH}"></script>"""
+    response = None
+    result = None
     if not cookie:
-        return HTMLResponse(content=html_content, media_type="text/html")
-    if not is_valid_uuid(cookie):
+        response = Response(content=html_content, media_type="text/html")
+    elif not is_valid_uuid(cookie):
         await as_bot(request, session)
-        return Response(status_code=status.HTTP_403_FORBIDDEN)
+        response = Response(status_code=status.HTTP_403_FORBIDDEN)
     else:
-        query = select(models.Cookie).filter_by(value=cookie)
-        result = await session.execute(query)
-        result = result.unique().scalar_one_or_none()
+        result = await get_cookie_by_value(cookie, session)
         if not result:
             await as_bot(request, session)
-            return Response(status_code=status.HTTP_403_FORBIDDEN)
+            response = Response(status_code=status.HTTP_403_FORBIDDEN)
         if not result.expiration_time >= datetime.utcnow():
-            return HTMLResponse(content=html_content, media_type="text/html")
+            response = Response(content=html_content, media_type="text/html")
+    return response, result

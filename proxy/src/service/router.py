@@ -29,10 +29,6 @@ async def get_fingerprint(request: Request,
 @limiter.limit(f"{RATE_LIMITER_COUNT}/{RATE_LIMITER_TIME}seconds")
 async def proxy_route(request: Request,
                       session: AsyncSession = Depends(get_async_session)):
-    cookie = request.cookies.get("sessionIdentifier")
-    not_valid = await is_valid_cookie(cookie, request, session)
-    if not_valid:
-        return not_valid
     body = await request.body()
     payload = dict(await request.form())
     async with httpx.AsyncClient() as client:
