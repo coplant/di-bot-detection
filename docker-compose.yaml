@@ -28,6 +28,39 @@ services:
     networks:
       - my-network
 
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+
+  celery:
+    build:
+      context: ./proxy
+    container_name: celery
+    command: [ "/code/proxy/docker/celery.sh" ]
+    volumes:
+      - ./proxy/:/proxy
+    depends_on:
+      - redis
+    networks:
+      - my-network
+
+  flower:
+    build:
+      context: ./proxy
+    container_name: flower
+    command: [ "/code/proxy/docker/flower.sh" ]
+    ports:
+      - "5555:5555"
+    depends_on:
+      - celery
+    networks:
+      - my-network
+
+
 #  backend:
 #    build:
 #      context: ./backend
