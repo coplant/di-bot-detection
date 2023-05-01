@@ -1,15 +1,14 @@
 import sys
-
 import uvicorn
 from fastapi import FastAPI
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from starlette.staticfiles import StaticFiles
-
 from exceptions import rate_limit_exceeded_handler
 from ratelimiter import limiter
-from service.middlewares import validate_ip
-from src.service.router import router as service_router
+
+from proxy.src.service.middlewares import validate_ip
+from proxy.src.service.router import router as service_router
 
 sys.path.append("..")
 

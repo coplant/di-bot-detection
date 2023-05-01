@@ -4,8 +4,8 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, UUID, Boolean, JSON, String, TIMESTAMP, ForeignKey, DateTime
 from sqlalchemy.sql import sqltypes
 
-from src.database import Base
-from service.utils import generate_valid_until
+from proxy.src.database import Base
+from proxy.src.service.utils import generate_valid_until
 
 
 class User(Base):

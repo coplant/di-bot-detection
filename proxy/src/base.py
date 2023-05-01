@@ -1,2 +1,2 @@
 from .database import Base
-from .service.models import User
+from proxy.src.service.models import User

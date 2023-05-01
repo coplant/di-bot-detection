@@ -2,8 +2,8 @@ from fastapi import Request, status
 from fastapi.responses import Response
 from sqlalchemy import select
 
-from database import async_session_maker
-from service.models import User
+from proxy.src.database import async_session_maker
+from proxy.src.service.models import User
 
 
 async def validate_ip(request: Request, call_next):

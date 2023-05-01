@@ -1,5 +1,4 @@
-import uuid
-from datetime import datetime
+import json
 
 import httpx as httpx
 from fastapi import APIRouter, Depends
@@ -7,14 +6,13 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import Response, HTMLResponse
+from starlette.responses import Response
 from ratelimiter import limiter
 
-from database import get_async_session
-from proxy.src.config import API_HOST, API_PORT, STATIC_PATH, RATE_LIMITER_TIME, RATE_LIMITER_COUNT
-from service.models import Cookie, User
-from service.schemas import FingerprintSchema
-from service.utils import is_valid_uuid, as_bot
+from proxy.src.database import get_async_session
+from proxy.src.config import API_HOST, API_PORT, RATE_LIMITER_TIME, RATE_LIMITER_COUNT
+from proxy.src.service.schemas import FingerprintSchema
+from proxy.src.service.utils import is_valid_cookie
 
 router = APIRouter()
 
