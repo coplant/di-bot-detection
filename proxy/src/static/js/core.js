@@ -5,7 +5,13 @@ import {config} from "./lib/config.js";
 let c = config.connection
 const url = `${c.protocol}://${c.host}${c.port ? ":" + c.port : ""}/${c.path}`
 
-function collectData() {
+async function collectRTC() {
+    return await fingerprints.webRTC.getIPs().then(ip => {
+        return ip;
+    });
+}
+
+async function collectData() {
     let data = {};
     if (config.collect.browser) {
         data.browser = {
@@ -20,15 +26,13 @@ function collectData() {
     }
     if (config.collect.timezone) {
         data.timezone = {
-            timezone: fingerprints.timeZone.getTimeZone(),
-            offset: fingerprints.timeZone.getTimeOffset()
+            timezone: fingerprints.timeZone.getTimeZone(), offset: fingerprints.timeZone.getTimeOffset()
         };
     }
     if (config.collect.fonts) {
         let fonts = fingerprints.fonts.getAvailableFonts();
         data.fonts = {
-            font_list: fonts,
-            size: fonts.length
+            font_list: fonts, size: fonts.length
         };
     }
     if (config.collect.canvas) {
@@ -38,8 +42,7 @@ function collectData() {
     }
     if (config.collect.UA) {
         data.UA = {
-            value: fingerprints.userAgent.getUserAgent(),
-            mobile: fingerprints.userAgent.isMobileDevice()
+            value: fingerprints.userAgent.getUserAgent(), mobile: fingerprints.userAgent.isMobileDevice()
         };
     }
     if (config.collect.screen) {
@@ -53,18 +56,14 @@ function collectData() {
         };
     }
     if (config.collect.webRTC) {
-        let client_ip;
-        fingerprints.webRTC.getIPs(function (ip) {
-            client_ip = ip;
-            data.webRTC = {
-                value: client_ip
-            };
-        });
+        let rtc_value = await collectRTC();
+        data.webRTC = {
+            value: rtc_value
+        };
     }
     if (config.collect.webGL) {
         data.webGL = {
-            headless: fingerprints.webGL.detectWebGL(),
-            value: fingerprints.webGL.getWebGL()
+            headless: fingerprints.webGL.detectWebGL(), value: fingerprints.webGL.getWebGL()
         };
     }
     if (config.collect.language) {
@@ -75,14 +74,12 @@ function collectData() {
     return data
 }
 
-let fp = collectData();
-console.log(fp);
+
+let fp = await collectData();
 fetch(url, {
-    method: config.connection.method,
-    headers: {
+    method: config.connection.method, headers: {
         'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(fp)
+    }, body: JSON.stringify(fp)
 })
     .then(response => response.json())
     .then(data => {
