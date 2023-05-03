@@ -34,13 +34,15 @@ def upgrade() -> None:
 
     op.create_table('users',
                     sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('uid', sa.UUID(), nullable=True),
+                    sa.Column('uid', sa.String(), nullable=True),
+                    sa.Column('hash', sa.String(), nullable=True),
                     sa.Column('ip', sa.String(), nullable=False),
                     sa.Column('fingerprint', sa.JSON(), nullable=True),
                     sa.Column('timestamp', sa.TIMESTAMP(), nullable=True),
                     sa.Column('is_bot', sa.Boolean(), nullable=False),
                     sa.PrimaryKeyConstraint('id'),
-                    sa.UniqueConstraint('uid')
+                    sa.UniqueConstraint('uid'),
+                    sa.UniqueConstraint('hash')
                     )
     op.create_table('cookies',
                     sa.Column('id', sa.Integer(), nullable=False),

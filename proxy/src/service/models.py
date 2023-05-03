@@ -11,7 +11,8 @@ from proxy.src.service.utils import generate_valid_until
 class User(Base):
     __tablename__ = "users"
     id: int = Column(Integer, primary_key=True)
-    uid: uuid = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
+    uid: str = Column(String, unique=True)
+    hash: str = Column(String, unique=True)
     ip: str = Column(String, nullable=False)
     fingerprint: sqltypes.JSON = Column(JSON)
     timestamp: datetime = Column(TIMESTAMP, default=datetime.utcnow)
