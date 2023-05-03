@@ -3,7 +3,7 @@ export let config = {
         protocol: "http",
         host: "localhost",
         port: 7000,
-        path: "api/json",
+        path: "api",
         method: "POST"
     },
     collect: {

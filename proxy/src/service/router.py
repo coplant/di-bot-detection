@@ -1,27 +1,42 @@
+import asyncio
+import datetime
 import json
 
 import httpx as httpx
+from celery.result import AsyncResult
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import Response
-from ratelimiter import limiter
+from starlette.responses import Response, RedirectResponse
 
+from proxy.src.ratelimiter import limiter
 from proxy.src.database import get_async_session
-from proxy.src.config import API_HOST, API_PORT, RATE_LIMITER_TIME, RATE_LIMITER_COUNT
+from proxy.src.background import analyze_fingerprint
 from proxy.src.service.schemas import FingerprintSchema
-from proxy.src.service.utils import is_valid_cookie
+from proxy.src.config import API_HOST, API_PORT, RATE_LIMITER_TIME, RATE_LIMITER_COUNT
 
 router = APIRouter()
 
 
-@router.post("/api/json")
+@router.get("/api/{task_id}")
+async def get_fingerprint(task_id: str):
+    async_result = AsyncResult(task_id)
+    while async_result.state != 'SUCCESS':
+        await asyncio.sleep(0.5)
+    # todo: установить куки здесь
+    return {'result': async_result.result}
+
+
+@router.post("/api")
 async def get_fingerprint(request: Request,
-                          fingerprint: FingerprintSchema):
-    # todo: receive fingerprint
-    return NotImplemented
+                          fingerprint: FingerprintSchema,
+                          session: AsyncSession = Depends(get_async_session)):
+    result = None
+    if fingerprint:
+        result = analyze_fingerprint.delay(fingerprint.dict())
+    return RedirectResponse(url=f"/api/{result}", status_code=status.HTTP_302_FOUND)
 
 
 @router.api_route("/", methods=["GET", "POST"])
