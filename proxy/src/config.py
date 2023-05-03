@@ -23,3 +23,5 @@ EXPIRATION_TIME = os.environ.get("EXPIRATION_TIME")
 
 RATE_LIMITER_COUNT = os.environ.get("RATE_LIMITER_COUNT")
 RATE_LIMITER_TIME = os.environ.get("RATE_LIMITER_TIME")
+
+CORS_URL = os.environ.get("CORS_URL")

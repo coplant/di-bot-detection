@@ -1,4 +1,4 @@
-import sys
+import uvicorn
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.staticfiles import StaticFiles
@@ -12,3 +12,6 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory=BASE_DIR / "src" / "static"), name="static")
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.include_router(home_router)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=7000)
