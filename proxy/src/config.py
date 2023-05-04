@@ -25,3 +25,17 @@ RATE_LIMITER_COUNT = os.environ.get("RATE_LIMITER_COUNT")
 RATE_LIMITER_TIME = os.environ.get("RATE_LIMITER_TIME")
 
 CORS_URL = os.environ.get("CORS_URL")
+
+LS_RATIO_MIN = 60
+LS_RATIO_MAX = 85
+FP_PRIORITY = {
+    "browser": 2.0,
+    "timezone": 1.7,
+    "fonts": 1.5,
+    "canvas": 2.5,
+    "UA": 1.1,
+    "screen": 1.0,
+    "webRTC": 3.0,
+    "webGL": 1.5,
+    "language": 1.3,
+}
