@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /code
 
-celery -A proxy.src.background.celery worker --loglevel=info
+celery -A proxy.src.assessment.background.celery worker --loglevel=info

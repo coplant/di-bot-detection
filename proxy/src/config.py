@@ -19,7 +19,7 @@ DB_NAME = os.environ.get("DB_NAME")
 DB_USER = os.environ.get("DB_USER")
 DB_PASS = os.environ.get("DB_PASS")
 
-EXPIRATION_TIME = os.environ.get("EXPIRATION_TIME")
+EXPIRATION_TIME = int(os.environ.get("EXPIRATION_TIME"))
 
 RATE_LIMITER_COUNT = os.environ.get("RATE_LIMITER_COUNT")
 RATE_LIMITER_TIME = os.environ.get("RATE_LIMITER_TIME")
@@ -38,4 +38,12 @@ FP_PRIORITY = {
     "webRTC": 3.0,
     "webGL": 1.5,
     "language": 1.3,
+}
+
+FP_RATIO = {
+    "browser": 0.5,
+    "timezone": 0.65,
+    "UA": 0.7,
+    "webRTC": 0.7,
+    "language": 0.85,
 }
