@@ -95,11 +95,8 @@ async def async_celery_task(fingerprint: FingerprintSchema, client_ip: str):
     return cookie.value
 
 
-# @celery.task
-async def analyze_fingerprint(fingerprint: FingerprintSchema, client_ip: str):
-    result = await async_celery_task(fingerprint, client_ip)
+@celery.task
+def analyze_fingerprint(fingerprint: FingerprintSchema, client_ip: str):
+    loop = asyncio.get_event_loop()
+    result = loop.run_until_complete(async_celery_task(fingerprint, client_ip))
     return result
-
-    # loop = asyncio.get_event_loop()
-    # result = loop.run_until_complete(async_celery_task(fingerprint, client_ip))
-    # return result
