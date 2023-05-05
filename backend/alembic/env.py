@@ -14,8 +14,8 @@ from alembic import context
 config = context.config
 
 sys.path.append(os.path.join(sys.path[0], 'src'))
-from src.base import Base
-from src.database import DATABASE_URL
+from backend.src.base import Base
+from backend.src.database import DATABASE_URL
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

@@ -33,6 +33,9 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    depends_on:
+      - db
+      - proxy-db
     networks:
       - my-network
 
@@ -61,23 +64,43 @@ services:
       - my-network
 
 
-#  backend:
-#    build:
-#      context: ./backend
-#    env_file:
-#      - backend/src/.env
-#    container_name: backend
-#    ports:
-#      - "8000:8000"
-#    expose:
-#      - 8000
-#    depends_on:
-#      - db
-#    command: [ "/code/backend/docker/app.sh" ]
-#    restart: on-failure
-#    networks:
-#      - my-network
+  proxy:
+    build:
+      context: ./proxy
+    env_file:
+      - proxy/.env
+    container_name: proxy
+    ports:
+      - "7000:7000"
+    expose:
+      - 7000
+    depends_on:
+      - proxy-db
+      - redis
+      - celery
+      - flower
+    command: [ "/code/proxy/docker/app.sh" ]
+    restart: on-failure
+    networks:
+      - my-network
 
+
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - backend/.env
+    container_name: backend-for-proxy
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    depends_on:
+      - db
+    command: [ "/code/backend/docker/app.sh" ]
+    restart: on-failure
+    networks:
+      - my-network
 
 networks:
   my-network:

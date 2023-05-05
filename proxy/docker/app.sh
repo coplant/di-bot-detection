@@ -1,6 +1,6 @@
 #!/bin/bash
-alembic upgrade head
+cd ..
 
-cd src
+alembic -c proxy/alembic.ini upgrade head
 
-gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000
+gunicorn proxy.src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:7000

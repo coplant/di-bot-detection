@@ -81,4 +81,6 @@ async def thanks(request: Request,
 
 @router.get("/noscript", response_class=HTMLResponse)
 async def noscript(request: Request):
+    print(request.base_url.path)
     return templates.TemplateResponse("nojs.html", {"request": request})
+

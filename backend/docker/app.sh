@@ -1,6 +1,6 @@
 #!/bin/bash
-alembic upgrade head
+cd ..
 
-cd src
+alembic -c backend/alembic.ini upgrade head
 
-gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000
+gunicorn backend.src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000
