@@ -79,11 +79,19 @@ let fp = await collectData();
 fetch(url, {
     method: config.connection.method, headers: {
         'Content-Type': 'application/json'
-    }, body: JSON.stringify(fp)
+    },
+    body: JSON.stringify(fp),
+    redirect: 'follow',
 })
-    .then(response => response.json())
+    .then(res => {
+        if (res.redirected) {
+            window.location.href = res.url;
+        } else {
+            return res.text();
+        }
+    })
     .then(data => {
-        // window.location.reload();
+        document.getElementById("response").innerHTML = data;
     })
     .catch(error => {
     });
