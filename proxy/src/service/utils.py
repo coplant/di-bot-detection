@@ -63,6 +63,6 @@ async def is_valid_cookie(cookie: str, request: Request, session: AsyncSession):
         if not result:
             await as_bot(request, session)
             response = Response(status_code=status.HTTP_403_FORBIDDEN)
-        if not result.expiration_time >= datetime.utcnow():
+        elif not result.expiration_time >= datetime.utcnow():
             response = Response(content=html_content, media_type="text/html")
     return response, result
