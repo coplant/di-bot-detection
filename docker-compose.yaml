@@ -102,6 +102,21 @@ services:
     networks:
       - my-network
 
+
+  nginx:
+    image: nginx:1.17.10
+    container_name: nginx
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - proxy-db
+    networks:
+      - my-network
+
+
 networks:
   my-network:
     driver: bridge

@@ -28,7 +28,7 @@ async def get_fingerprint(task_id: str):
 @router.post("/api")
 async def get_fingerprint(request: Request, fingerprint: FingerprintSchema):
     if fingerprint:
-        result = analyze_fingerprint.delay(fingerprint.dict(), request.client.host)
+        result = analyze_fingerprint.delay(fingerprint.dict(), request.headers.get("X-Forwarded-For"))
         if result:
             return RedirectResponse(url=f"/api/{result}", status_code=status.HTTP_302_FOUND)
     return Response(status_code=status.HTTP_403_FORBIDDEN)
