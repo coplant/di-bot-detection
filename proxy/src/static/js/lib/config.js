@@ -2,7 +2,7 @@ export let config = {
     connection: {
         protocol: "http",
         host: "localhost",
-        port: 7000,
+        port: 8888,
         path: "api",
         method: "POST"
     },
