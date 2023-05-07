@@ -19,13 +19,13 @@ async def validate_fingerprint(request: Request, call_next):
             query = select(User).filter_by(id=cookie.user_id)
             result = await session.execute(query)
             result = result.scalar_one_or_none()
-            if result.is_bot:
+            if result and result.is_bot:
                 return Response(status_code=status.HTTP_403_FORBIDDEN)
         return await call_next(request)
 
 
 async def validate_ip(request: Request, call_next):
-    client_ip = str(request.client.host)
+    client_ip = request.headers.get("X-Forwarded-For")
     async with async_session_maker() as session:
         query = select(User).filter_by(ip=client_ip).filter_by(is_bot=True)
         result = await session.execute(query)

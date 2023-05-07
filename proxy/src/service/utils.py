@@ -35,7 +35,7 @@ def is_valid_uuid(client_uuid, version=4):
 
 
 async def as_bot(request: Request, session: AsyncSession):
-    user = models.User(ip=request.client.host, is_bot=True)
+    user = models.User(ip=request.headers.get("X-Forwarded-For"), is_bot=True)
     session.add(user)
     await session.flush()
     log = models.Logging(user_id=user.id, action_id=Actions.Bod_detected.value)
